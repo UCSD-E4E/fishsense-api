@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Iterable
-
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel, and_, select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -22,13 +20,19 @@ from fishsense_api.models.user import User
 
 
 class Database:
-    # pylint: disable=too-many-public-methods
     """Database interaction class for FishSense API Workflow Worker."""
+
+    is_initialized = False
 
     def __init__(self, database_url: str):
         self.engine = create_async_engine(database_url)
 
     async def init_database(self) -> None:
+        if Database.is_initialized:
+            return
+
         """Initialize the database by creating all tables."""
         async with self.engine.begin() as conn:
             await conn.run_sync(SQLModel.metadata.create_all)
+
+        Database.is_initialized = True
