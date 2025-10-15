@@ -43,7 +43,7 @@ async def get_camera_intrinsics(camera_id: int) -> CameraIntrinsics | None:
         return (await session.exec(query)).first()
 
 
-@app.post("/api/v1/cameras/{camera_id}/intrinsics/")
+@app.post("/api/v1/cameras/{camera_id}/intrinsics/", status_code=201)
 async def post_camera_intrinsics(camera_id: int, intrinsics: CameraIntrinsics) -> int:
     database = Database(PG_CONNECTION_STRING)
     await database.init_database()
