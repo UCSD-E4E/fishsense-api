@@ -7,6 +7,7 @@ from sqlmodel import SQLModel, and_, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from fishsense_api.models.camera import Camera
+from fishsense_api.models.camera_intrinsics import CameraIntrinsics
 from fishsense_api.models.dive import Dive
 from fishsense_api.models.dive_frame_cluster import (
     DiveFrameCluster,

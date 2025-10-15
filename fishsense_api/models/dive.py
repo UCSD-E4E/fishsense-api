@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from sqlmodel import DateTime, Field, SQLModel
+from sqlmodel import Column, DateTime, Enum, Field, SQLModel
 
 from fishsense_api.models.priority import Priority
 
@@ -14,7 +14,7 @@ class Dive(SQLModel, table=True):
     name: str | None = Field(default=None, index=True)
     path: str = Field(max_length=255, unique=True, index=True)
     dive_datetime: datetime = Field(sa_type=DateTime(timezone=True), default=None)
-    priority: Priority = Field(default=Priority.LOW, index=True)
+    priority: Priority = Field(default=Priority.LOW, sa_column=Column(Enum(Priority)))
     flip_dive_slate: bool | None = Field(default=False)
 
     camera_id: int | None = Field(default=None, foreign_key="camera.id")
