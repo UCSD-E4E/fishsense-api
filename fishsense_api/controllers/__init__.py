@@ -1,0 +1,2 @@
+import fishsense_api.controllers.dive_controller
+import fishsense_api.controllers.image_controller

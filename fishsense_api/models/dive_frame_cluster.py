@@ -1,3 +1,6 @@
+from typing import List
+
+from pydantic import BaseModel
 from sqlmodel import Field, SQLModel
 
 
@@ -16,3 +19,10 @@ class DiveFrameClusterImageMapping(SQLModel, table=True):
         default=None, foreign_key="diveframecluster.id", primary_key=True
     )
     image_id: int = Field(default=None, foreign_key="image.id", primary_key=True)
+
+
+class DiveFrameClusterJson(BaseModel):
+    """Pydantic model for serializing DiveFrameCluster data."""
+
+    id: int
+    image_ids: List[int]
