@@ -23,7 +23,7 @@ dev = [
 ]
 
 [tool.semantic_release]
-version_variables = ["src/fishsense_api_workflow_worker/__init__.py:__version__"]
+version_variables = ["fishsense_api/__init__.py:__version__"]
 version_toml = [
     "pyproject.toml:project.version",
 ]
