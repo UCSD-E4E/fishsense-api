@@ -12,7 +12,7 @@ RUN uv sync --compile-bytecode --no-dev --no-editable --no-install-project && uv
 
 # Copy and build the package
 COPY README.md /app
-COPY fishsense_api /app/fishsense_api
+COPY src /app/src
 RUN uv sync --compile-bytecode --no-dev --no-editable && uv cache clean
 
 # Start building the actual runtime container.
