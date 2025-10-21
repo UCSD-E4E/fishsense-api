@@ -1,3 +1,5 @@
+"""Label Controller for FishSense API."""
+
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -10,6 +12,7 @@ from fishsense_api.server import app
 
 @app.get("/api/v1/labels/laser/{image_id}")
 async def get_laser_label(image_id: int) -> LaserLabel:
+    """Retrieve a laser label for a given image ID."""
     database = Database(PG_CONNECTION_STRING)
     await database.init_database()
 
@@ -21,6 +24,7 @@ async def get_laser_label(image_id: int) -> LaserLabel:
 
 @app.get("/api/v1/labels/species/{image_id}")
 async def get_species_label(image_id: int) -> SpeciesLabel:
+    """Retrieve a species label for a given image ID."""
     database = Database(PG_CONNECTION_STRING)
     await database.init_database()
 
@@ -32,6 +36,7 @@ async def get_species_label(image_id: int) -> SpeciesLabel:
 
 @app.post("/api/v1/labels/species/{image_id}", status_code=201)
 async def post_species_label(image_id: int, label: SpeciesLabel) -> int:
+    """Create or update a species label for a given image ID."""
     database = Database(PG_CONNECTION_STRING)
     await database.init_database()
 

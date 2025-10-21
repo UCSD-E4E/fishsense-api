@@ -1,3 +1,5 @@
+"""Configuration module for FishSense API."""
+
 import os
 from pathlib import Path
 

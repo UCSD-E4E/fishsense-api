@@ -1,3 +1,5 @@
+"""Models for Dive Frame Clusters in FishSense API."""
+
 from typing import List
 
 from pydantic import BaseModel

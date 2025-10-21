@@ -1,3 +1,5 @@
+"""Model representing camera intrinsics for FishSense API."""
+
 from typing import List
 
 from sqlmodel import JSON, Column, Field, SQLModel

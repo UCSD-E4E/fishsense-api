@@ -1,12 +1,12 @@
+"""Species Label Model for FishSense API."""
+
 from datetime import datetime
 from typing import Any, Dict
 
 from sqlmodel import JSON, Column, DateTime, Field, SQLModel
 
-from fishsense_api.models.label_studio_label_base import LabelStudioLabelBase
 
-
-class SpeciesLabel(LabelStudioLabelBase, SQLModel, table=True):
+class SpeciesLabel(SQLModel, table=True):
     """Model representing a species label."""
 
     id: int | None = Field(default=None, primary_key=True)

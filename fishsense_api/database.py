@@ -1,3 +1,4 @@
+# pylint: disable=unused-import
 """Database interaction module for FishSense API Workflow Worker."""
 
 from __future__ import annotations
@@ -22,6 +23,8 @@ from fishsense_api.models.user import User
 
 
 class Database:
+    # pylint: disable=too-few-public-methods
+
     """Database interaction class for FishSense API Workflow Worker."""
 
     is_initialized = False
@@ -30,10 +33,10 @@ class Database:
         self.engine = create_async_engine(database_url)
 
     async def init_database(self) -> None:
+        """Initialize the database by creating all tables."""
         if Database.is_initialized:
             return
 
-        """Initialize the database by creating all tables."""
         async with self.engine.begin() as conn:
             await conn.run_sync(SQLModel.metadata.create_all)
 

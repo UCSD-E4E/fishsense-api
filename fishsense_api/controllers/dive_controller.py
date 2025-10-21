@@ -1,3 +1,5 @@
+"""Dive Controller for FishSense API."""
+
 from typing import List
 
 from sqlmodel import select
@@ -11,6 +13,7 @@ from fishsense_api.server import app
 
 @app.get("/api/v1/dives/")
 async def get_dives() -> List[Dive]:
+    """Retrieve all dives."""
     database = Database(PG_CONNECTION_STRING)
     await database.init_database()
 
@@ -22,6 +25,7 @@ async def get_dives() -> List[Dive]:
 
 @app.get("/api/v1/dives/{dive_id}")
 async def get_dive(dive_id: int) -> Dive | None:
+    """Retrieve a dive by its ID."""
     database = Database(PG_CONNECTION_STRING)
     await database.init_database()
 
