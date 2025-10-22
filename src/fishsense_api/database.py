@@ -3,10 +3,14 @@
 
 from __future__ import annotations
 
+from collections.abc import AsyncGenerator
+
 from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel, and_, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from fishsense_api.config import PG_CONNECTION_STRING
 from fishsense_api.models.camera import Camera
 from fishsense_api.models.camera_intrinsics import CameraIntrinsics
 from fishsense_api.models.dive import Dive
@@ -27,17 +31,29 @@ class Database:
 
     """Database interaction class for FishSense API Workflow Worker."""
 
-    is_initialized = False
-
     def __init__(self, database_url: str):
         self.engine = create_async_engine(database_url)
 
-    async def init_database(self) -> None:
+    async def init_database(self, conn: AsyncSession) -> None:
         """Initialize the database by creating all tables."""
-        if Database.is_initialized:
-            return
+        await conn.run_sync(SQLModel.metadata.create_all)
 
-        async with self.engine.begin() as conn:
-            await conn.run_sync(SQLModel.metadata.create_all)
+    async def dispose(self) -> None:
+        """Dispose of the database engine."""
+        await self.engine.dispose()
 
-        Database.is_initialized = True
+
+DATABASE = Database(PG_CONNECTION_STRING)
+__AsyncSessionLocal = sessionmaker(
+    DATABASE.engine, class_=AsyncSession, expire_on_commit=False
+)
+
+
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    """A context manager for getting a session.
+
+    Yields:
+        AsyncSession: An asynchronous database session.
+    """
+    async with __AsyncSessionLocal() as session:
+        yield session
