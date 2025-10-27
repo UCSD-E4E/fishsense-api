@@ -6,7 +6,7 @@ from fastapi import Depends
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from fishsense_api.database import Database, get_async_session
+from fishsense_api.database import get_async_session
 from fishsense_api.models.dive import Dive
 from fishsense_api.server import app
 

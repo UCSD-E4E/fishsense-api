@@ -44,7 +44,7 @@ class Database:
 
 
 DATABASE = Database(PG_CONNECTION_STRING)
-__AsyncSessionLocal = sessionmaker(
+__ASYNC_SESSION_LOCAL = sessionmaker(
     DATABASE.engine, class_=AsyncSession, expire_on_commit=False
 )
 
@@ -55,5 +55,5 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     Yields:
         AsyncSession: An asynchronous database session.
     """
-    async with __AsyncSessionLocal() as session:
+    async with __ASYNC_SESSION_LOCAL() as session:
         yield session
