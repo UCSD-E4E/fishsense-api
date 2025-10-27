@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v1.0.2 (2025-10-27)
+
+### Bug Fixes
+
+- Pylint errors
+  ([`b43cb66`](https://github.com/UCSD-E4E/fishsense-api/commit/b43cb6601b5b0bd2a01345e1f6e9b9170b71b51b))
+
+- Use a connection pool so that we do not flood the database with connections
+  ([`3086756`](https://github.com/UCSD-E4E/fishsense-api/commit/3086756e451e77944e006f54b261fe42fdcf9d07))
+
+### Chores
+
+- Update uv lock
+  ([`2c591f0`](https://github.com/UCSD-E4E/fishsense-api/commit/2c591f007183dd764d54b1bd2177a41f91421419))
+
+
 ## v1.0.1 (2025-10-21)
 
 ### Bug Fixes
