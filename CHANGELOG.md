@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.0.4 (2025-10-29)
+
+### Bug Fixes
+
+- Check in missing parts of direnv
+  ([`7997e2d`](https://github.com/UCSD-E4E/fishsense-api/commit/7997e2ddb656bf09f30964bb2b9858511422dc4c))
+
+
 ## v1.0.3 (2025-10-29)
 
 ### Bug Fixes
