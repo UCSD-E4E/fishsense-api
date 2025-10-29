@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.0.3 (2025-10-29)
+
+### Bug Fixes
+
+- Introduce flakes
+  ([`b597faf`](https://github.com/UCSD-E4E/fishsense-api/commit/b597faf09b1bbb62af2b3ae9032d7344f913da10))
+
+
 ## v1.0.2 (2025-10-27)
 
 ### Bug Fixes
