@@ -7,7 +7,6 @@
         "eamodio.gitlens",
         "VisualStudioExptTeam.vscodeintellicode",
         "ms-python.black-formatter",
-        "ms-ossdata.vscode-pgsql",
-        "mkhl.direnv"
+        "ms-ossdata.vscode-pgsql"
     ]
 }
