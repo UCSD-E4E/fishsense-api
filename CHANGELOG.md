@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v1.0.5 (2025-10-30)
+
+### Bug Fixes
+
+- Cleanup settings to not have user included
+  ([`4b8e999`](https://github.com/UCSD-E4E/fishsense-api/commit/4b8e999facb6b1469ccebf62f4c517e53cfc3eb7))
+
+### Chores
+
+- Update uv.lock
+  ([`2f6857c`](https://github.com/UCSD-E4E/fishsense-api/commit/2f6857cf422e723353162141d838f4fb8c14d980))
+
+
 ## v1.0.4 (2025-10-29)
 
 ### Bug Fixes
