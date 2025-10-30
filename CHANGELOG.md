@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.1.0 (2025-10-30)
+
+### Features
+
+- Introduce code owners
+  ([`e4d4244`](https://github.com/UCSD-E4E/fishsense-api/commit/e4d42447e11bd1ce7ab41d88dcc47ec9040d4687))
+
+
 ## v1.0.5 (2025-10-30)
 
 ### Bug Fixes
