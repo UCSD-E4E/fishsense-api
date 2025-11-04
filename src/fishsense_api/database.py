@@ -21,6 +21,7 @@ from fishsense_api.models.dive_frame_cluster import (
 from fishsense_api.models.dive_slate import DiveSlate
 from fishsense_api.models.head_tail_label import HeadTailLabel
 from fishsense_api.models.image import Image
+from fishsense_api.models.label_studio_project import LabelStudioProject
 from fishsense_api.models.laser_label import LaserLabel
 from fishsense_api.models.species_label import SpeciesLabel
 from fishsense_api.models.user import User

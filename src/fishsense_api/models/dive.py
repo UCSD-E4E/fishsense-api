@@ -19,3 +19,6 @@ class Dive(SQLModel, table=True):
 
     camera_id: int | None = Field(default=None, foreign_key="camera.id")
     dive_slate_id: int | None = Field(default=None, foreign_key="diveslate.id")
+    species_label_project_id: int | None = Field(
+        default=None, foreign_key="labelstudioproject.id"
+    )
