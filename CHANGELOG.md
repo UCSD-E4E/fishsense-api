@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.2.0 (2025-11-04)
+
+### Features
+
+- Introduce label studio species project id to sql table
+  ([`bda896b`](https://github.com/UCSD-E4E/fishsense-api/commit/bda896b5d9f5269e1025ed3160987cc64bcf0e88))
+
+
 ## v1.1.1 (2025-10-30)
 
 ### Bug Fixes
