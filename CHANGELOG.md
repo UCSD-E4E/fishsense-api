@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.3.0 (2025-11-17)
+
+### Features
+
+- Add project id to species labels
+  ([`08ae468`](https://github.com/UCSD-E4E/fishsense-api/commit/08ae468e221b154fee39b7958365853e1485dcd9))
+
+
 ## v1.2.0 (2025-11-04)
 
 ### Features
