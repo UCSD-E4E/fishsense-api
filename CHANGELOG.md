@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.4.0 (2025-11-17)
+
+### Features
+
+- Add data frame cluster datasource
+  ([`cc80c4f`](https://github.com/UCSD-E4E/fishsense-api/commit/cc80c4f0872925b31dde38ee0cff9e3491ab58b5))
+
+
 ## v1.3.0 (2025-11-17)
 
 ### Features
