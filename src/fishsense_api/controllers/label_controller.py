@@ -5,6 +5,8 @@ from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from fishsense_api.database import get_async_session
+from fishsense_api.models.dive import Dive
+from fishsense_api.models.image import Image
 from fishsense_api.models.laser_label import LaserLabel
 from fishsense_api.models.species_label import SpeciesLabel
 from fishsense_api.server import app
@@ -21,6 +23,22 @@ async def get_laser_label(
     return (await session.exec(query)).first()
 
 
+@app.get("/api/v1/dives/{dive_id}/labels/species")
+async def get_species_labels_for_dive(
+    dive_id: int, session: AsyncSession = Depends(get_async_session)
+) -> list[SpeciesLabel]:
+    """Retrieve all species labels for a given dive ID."""
+    query = (
+        select(SpeciesLabel)
+        .join_from(SpeciesLabel, Image, SpeciesLabel.image_id == Image.id)
+        .join_from(Image, Dive, Image.dive_id == Dive.id)
+        .where(Dive.id == dive_id)
+    )
+
+    results = await session.exec(query)
+    return results.all()
+
+
 @app.get("/api/v1/labels/species/{image_id}")
 async def get_species_label(
     image_id: int, session: AsyncSession = Depends(get_async_session)
@@ -31,8 +49,8 @@ async def get_species_label(
     return (await session.exec(query)).first()
 
 
-@app.post("/api/v1/labels/species/{image_id}", status_code=201)
-async def post_species_label(
+@app.put("/api/v1/labels/species/{image_id}", status_code=201)
+async def put_species_label(
     image_id: int,
     label: SpeciesLabel,
     session: AsyncSession = Depends(get_async_session),

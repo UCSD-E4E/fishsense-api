@@ -1,11 +1,7 @@
 """Model representing a user."""
 
-from __future__ import annotations
-
 from datetime import datetime
-from typing import Self
 
-from label_studio_sdk import LseUserApi
 from sqlmodel import DateTime, Field, SQLModel
 
 
@@ -21,16 +17,3 @@ class User(SQLModel, table=True):
         sa_type=DateTime(timezone=True), default=None
     )
     date_joined: datetime | None = Field(sa_type=DateTime(timezone=True), default=None)
-
-    @classmethod
-    def from_label_studio(cls, user: LseUserApi) -> Self:
-        """Create a User instance from a Label Studio user."""
-
-        return cls(
-            label_studio_id=user.id,
-            email=user.email,
-            first_name=user.first_name,
-            last_name=user.last_name,
-            last_activity=user.last_activity,
-            date_joined=user.date_joined,
-        )
