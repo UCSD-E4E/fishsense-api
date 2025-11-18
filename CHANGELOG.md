@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.5.0 (2025-11-18)
+
+### Features
+
+- Introduce user controller
+  ([`4a66b2d`](https://github.com/UCSD-E4E/fishsense-api/commit/4a66b2d84e6fb07bffbc6c3b6e1f722c8ae3fb8a))
+
+
 ## v1.4.0 (2025-11-17)
 
 ### Features
