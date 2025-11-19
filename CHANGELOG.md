@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.6.0 (2025-11-19)
+
+### Features
+
+- Full species labels
+  ([`129e4cd`](https://github.com/UCSD-E4E/fishsense-api/commit/129e4cdb872adfd33f8b9d124b8614961a4759bb))
+
+
 ## v1.5.0 (2025-11-18)
 
 ### Features
