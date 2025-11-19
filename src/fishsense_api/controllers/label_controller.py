@@ -1,6 +1,7 @@
 """Label Controller for FishSense API."""
 
 from fastapi import Depends
+from fastapi.encoders import jsonable_encoder
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -56,6 +57,7 @@ async def put_species_label(
     session: AsyncSession = Depends(get_async_session),
 ) -> int:
     """Create or update a species label for a given image ID."""
+    label = SpeciesLabel.model_validate(jsonable_encoder(label))
     label.image_id = image_id
 
     label = await session.merge(label)
