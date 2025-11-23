@@ -27,6 +27,16 @@ async def get_image(
     return (await session.exec(query)).first()
 
 
+@app.get("/api/v1/images/checksum/{checksum}")
+async def get_image_by_checksum(
+    checksum: str, session: AsyncSession = Depends(get_async_session)
+) -> Image | None:
+    """Retrieve an image by its checksum."""
+    query = select(Image).where(Image.checksum == checksum)
+
+    return (await session.exec(query)).first()
+
+
 @app.get("/api/v1/dives/{dive_id}/images/")
 async def get_dive_images(
     dive_id: int, session: AsyncSession = Depends(get_async_session)

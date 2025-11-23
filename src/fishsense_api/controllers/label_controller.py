@@ -1,3 +1,4 @@
+# pylint: disable=C0121
 """Label Controller for FishSense API."""
 
 from typing import List
@@ -9,10 +10,62 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from fishsense_api.database import get_async_session
 from fishsense_api.models.dive import Dive
+from fishsense_api.models.head_tail_label import HeadTailLabel
 from fishsense_api.models.image import Image
 from fishsense_api.models.laser_label import LaserLabel
 from fishsense_api.models.species_label import SpeciesLabel
 from fishsense_api.server import app
+
+
+@app.get("/api/v1/labels/headtail/{image_id}")
+async def get_headtail_label(
+    image_id: int, session: AsyncSession = Depends(get_async_session)
+) -> HeadTailLabel | None:
+    """Retrieve a head-tail label for a given image ID."""
+
+    query = (
+        select(HeadTailLabel)
+        .where(HeadTailLabel.image_id == image_id)
+        .where(HeadTailLabel.superseded == False)
+    )
+
+    return (await session.exec(query)).first()
+
+
+@app.get("/api/v1/dives/{dive_id}/labels/headtail")
+async def get_headtail_labels_for_dive(
+    dive_id: int, session: AsyncSession = Depends(get_async_session)
+) -> List[HeadTailLabel]:
+    """Retrieve all head-tail labels for a given dive ID."""
+    query = (
+        select(HeadTailLabel)
+        .join_from(HeadTailLabel, Image, HeadTailLabel.image_id == Image.id)
+        .join_from(Image, Dive, Image.dive_id == Dive.id)
+        .where(Dive.id == dive_id)
+        .where(HeadTailLabel.superseded == False)
+    )
+
+    results = await session.exec(query)
+    return results.all()
+
+
+@app.put("/api/v1/labels/headtail/{image_id}", status_code=201)
+async def put_headtail_label(
+    image_id: int,
+    label: HeadTailLabel,
+    session: AsyncSession = Depends(get_async_session),
+) -> int:
+    """Create or update a head-tail label for a given image ID."""
+    label = HeadTailLabel.model_validate(jsonable_encoder(label))
+    label.image_id = image_id
+
+    label = await session.merge(label)
+    await session.flush()
+
+    label_id = label.id
+
+    await session.commit()
+    return label_id
 
 
 @app.get("/api/v1/labels/laser/{image_id}")
@@ -24,7 +77,7 @@ async def get_laser_label(
     query = (
         select(LaserLabel)
         .where(LaserLabel.image_id == image_id)
-        .where(LaserLabel.superseded is False)
+        .where(LaserLabel.superseded == False)
     )
 
     return (await session.exec(query)).first()
@@ -40,7 +93,7 @@ async def get_laser_labels_for_dive(
         .join_from(LaserLabel, Image, LaserLabel.image_id == Image.id)
         .join_from(Image, Dive, Image.dive_id == Dive.id)
         .where(Dive.id == dive_id)
-        .where(LaserLabel.superseded is False)
+        .where(LaserLabel.superseded == False)
     )
 
     results = await session.exec(query)
