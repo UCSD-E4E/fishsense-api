@@ -24,7 +24,7 @@ async def get_laser_label(
     query = (
         select(LaserLabel)
         .where(LaserLabel.image_id == image_id)
-        .where(LaserLabel.superseded == False)
+        .where(LaserLabel.superseded is False)
     )
 
     return (await session.exec(query)).first()
@@ -40,7 +40,7 @@ async def get_laser_labels_for_dive(
         .join_from(LaserLabel, Image, LaserLabel.image_id == Image.id)
         .join_from(Image, Dive, Image.dive_id == Dive.id)
         .where(Dive.id == dive_id)
-        .where(LaserLabel.superseded == False)
+        .where(LaserLabel.superseded is False)
     )
 
     results = await session.exec(query)
