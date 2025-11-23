@@ -9,6 +9,7 @@ from sqlmodel import JSON, Column, DateTime, Field, SQLModel
 
 
 class HeadTailLabel(SQLModel, table=True):
+    # pylint: disable=R0801
     """Model representing a head-tail label."""
 
     id: int | None = Field(default=None, primary_key=True)
