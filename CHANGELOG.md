@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v1.8.0 (2025-11-23)
+
+### Chores
+
+- Pylint errors
+  ([`b0353b4`](https://github.com/UCSD-E4E/fishsense-api/commit/b0353b4f75af2458af2510f932d805226f16dc90))
+
+### Features
+
+- Sync headtail labels
+  ([`d9d8541`](https://github.com/UCSD-E4E/fishsense-api/commit/d9d8541ef19d1063bee25d39ae06941264e54458))
+
+
 ## v1.7.0 (2025-11-23)
 
 ### Bug Fixes
