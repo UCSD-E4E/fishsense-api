@@ -1,5 +1,7 @@
 """Label Controller for FishSense API."""
 
+from typing import List
+
 from fastapi import Depends
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import select
@@ -19,15 +21,55 @@ async def get_laser_label(
 ) -> LaserLabel | None:
     """Retrieve a laser label for a given image ID."""
 
-    query = select(LaserLabel).where(LaserLabel.image_id == image_id)
+    query = (
+        select(LaserLabel)
+        .where(LaserLabel.image_id == image_id)
+        .where(LaserLabel.superseded == False)
+    )
 
     return (await session.exec(query)).first()
+
+
+@app.get("/api/v1/dives/{dive_id}/labels/laser")
+async def get_laser_labels_for_dive(
+    dive_id: int, session: AsyncSession = Depends(get_async_session)
+) -> List[LaserLabel]:
+    """Retrieve all laser labels for a given dive ID."""
+    query = (
+        select(LaserLabel)
+        .join_from(LaserLabel, Image, LaserLabel.image_id == Image.id)
+        .join_from(Image, Dive, Image.dive_id == Dive.id)
+        .where(Dive.id == dive_id)
+        .where(LaserLabel.superseded == False)
+    )
+
+    results = await session.exec(query)
+    return results.all()
+
+
+@app.put("/api/v1/labels/laser/{image_id}", status_code=201)
+async def put_laser_label(
+    image_id: int,
+    label: LaserLabel,
+    session: AsyncSession = Depends(get_async_session),
+) -> int:
+    """Create or update a laser label for a given image ID."""
+    label = LaserLabel.model_validate(jsonable_encoder(label))
+    label.image_id = image_id
+
+    label = await session.merge(label)
+    await session.flush()
+
+    label_id = label.id
+
+    await session.commit()
+    return label_id
 
 
 @app.get("/api/v1/dives/{dive_id}/labels/species")
 async def get_species_labels_for_dive(
     dive_id: int, session: AsyncSession = Depends(get_async_session)
-) -> list[SpeciesLabel]:
+) -> List[SpeciesLabel]:
     """Retrieve all species labels for a given dive ID."""
     query = (
         select(SpeciesLabel)
