@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v1.7.0 (2025-11-23)
+
+### Bug Fixes
+
+- Pylint errors
+  ([`0f5b7eb`](https://github.com/UCSD-E4E/fishsense-api/commit/0f5b7eb87abd6e764354ce223ff47f8b5b316cec))
+
+### Features
+
+- Expose laser label
+  ([`84ba9b8`](https://github.com/UCSD-E4E/fishsense-api/commit/84ba9b8ebb7255d7589972821fb4f56d7b62b69b))
+
+
 ## v1.6.0 (2025-11-19)
 
 ### Features
