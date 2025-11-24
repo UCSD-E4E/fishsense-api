@@ -7,6 +7,7 @@ from sqlmodel import JSON, Column, DateTime, Field, SQLModel
 
 
 class SpeciesLabel(SQLModel, table=True):
+    # pylint: disable=R0801
     """Model representing a species label."""
 
     id: int | None = Field(default=None, primary_key=True)

@@ -9,6 +9,7 @@ from sqlmodel import JSON, Column, DateTime, Field, SQLModel
 
 
 class LaserLabel(SQLModel, table=True):
+    # pylint: disable=R0801
     """Model representing a laser label."""
 
     id: int | None = Field(default=None, primary_key=True)

@@ -1,3 +1,5 @@
+"""Dive slate controller."""
+
 from typing import List
 
 from fastapi import Depends
