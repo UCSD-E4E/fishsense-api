@@ -29,6 +29,22 @@ async def get_dive_slate_label(
     return (await session.exec(query)).first()
 
 
+@app.get("/api/v1/dives/{dive_id}/labels/dive-slate")
+async def get_dive_slate_labels_for_dive(
+    dive_id: int, session: AsyncSession = Depends(get_async_session)
+) -> List[DiveSlateLabel]:
+    """Retrieve all slate labels for a given dive ID."""
+    query = (
+        select(DiveSlateLabel)
+        .join_from(DiveSlateLabel, Image, DiveSlateLabel.image_id == Image.id)
+        .join_from(Image, Dive, Image.dive_id == Dive.id)
+        .where(Dive.id == dive_id)
+    )
+
+    results = await session.exec(query)
+    return results.all()
+
+
 @app.put("/api/v1/labels/dive-slate/{image_id}", status_code=201)
 async def put_dive_slate_label(
     image_id: int,

@@ -1,7 +1,7 @@
 """Model for Slate Labels."""
 
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any, Dict, List, Tuple
 
 from sqlmodel import JSON, Column, DateTime, Field, SQLModel
 
@@ -13,6 +13,14 @@ class DiveSlateLabel(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     label_studio_task_id: int | None = Field(default=None, unique=True, index=True)
     label_studio_project_id: int | None = Field(default=None, index=True)
+    upside_down: bool | None = Field(default=None)
+    reference_points: List[Tuple[float, float]] | None = Field(
+        default=None, sa_column=Column(JSON)
+    )
+    slate_rectangle: List[Tuple[float, float]] | None = Field(
+        default=None, sa_column=Column(JSON)
+    )
+    skipped_points: List[int] | None = Field(default=None, sa_column=Column(JSON))
     image_url: str | None = Field(default=None)
     updated_at: datetime | None = Field(sa_type=DateTime(timezone=True), default=None)
     completed: bool | None = Field(default=False)
