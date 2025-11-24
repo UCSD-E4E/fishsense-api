@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v1.9.0 (2025-11-24)
+
+### Bug Fixes
+
+- Pylint errors
+  ([`a5addfb`](https://github.com/UCSD-E4E/fishsense-api/commit/a5addfb73b84217b0a5c043b1cd391d2909b7864))
+
+### Features
+
+- Add dive slate labels
+  ([`75cc762`](https://github.com/UCSD-E4E/fishsense-api/commit/75cc7621a7b3ea8f4e32ebd665fbfb0410d85a57))
+
+
 ## v1.8.0 (2025-11-23)
 
 ### Chores
