@@ -10,11 +10,42 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from fishsense_api.database import get_async_session
 from fishsense_api.models.dive import Dive
+from fishsense_api.models.dive_slate_label import DiveSlateLabel
 from fishsense_api.models.head_tail_label import HeadTailLabel
 from fishsense_api.models.image import Image
 from fishsense_api.models.laser_label import LaserLabel
 from fishsense_api.models.species_label import SpeciesLabel
 from fishsense_api.server import app
+
+
+@app.get("/api/v1/labels/dive-slate/{image_id}")
+async def get_dive_slate_label(
+    image_id: int, session: AsyncSession = Depends(get_async_session)
+) -> DiveSlateLabel | None:
+    """Retrieve slate label for a given image ID."""
+
+    query = select(DiveSlateLabel).where(DiveSlateLabel.image_id == image_id)
+
+    return (await session.exec(query)).first()
+
+
+@app.put("/api/v1/labels/dive-slate/{image_id}", status_code=201)
+async def put_dive_slate_label(
+    image_id: int,
+    label: DiveSlateLabel,
+    session: AsyncSession = Depends(get_async_session),
+) -> int:
+    """Create or update slate label for a given image ID."""
+    label = DiveSlateLabel.model_validate(jsonable_encoder(label))
+    label.image_id = image_id
+
+    label = await session.merge(label)
+    await session.flush()
+
+    label_id = label.id
+
+    await session.commit()
+    return label_id
 
 
 @app.get("/api/v1/labels/headtail/{image_id}")
