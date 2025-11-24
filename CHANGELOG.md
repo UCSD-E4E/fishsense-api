@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.10.0 (2025-11-24)
+
+### Features
+
+- Dive slate labels synced
+  ([`d157ac1`](https://github.com/UCSD-E4E/fishsense-api/commit/d157ac174c97da1085791df8ea9e12bb6df54c84))
+
+
 ## v1.9.0 (2025-11-24)
 
 ### Bug Fixes
