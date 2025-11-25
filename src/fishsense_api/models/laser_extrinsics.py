@@ -1,0 +1,14 @@
+from datetime import datetime
+from typing import List
+
+from sqlmodel import JSON, Column, DateTime, Field, SQLModel
+
+
+class LaserExtrinsics(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    laser_position: List[float] = Field(default_factory=list, sa_column=Column(JSON))
+    laser_axis: List[float] = Field(default_factory=list, sa_column=Column(JSON))
+    created_at: datetime | None = Field(sa_type=DateTime(timezone=True), default=None)
+
+    dive_id: int | None = Field(default=None, foreign_key="dive.id")
+    camera_id: int = Field(default=None, foreign_key="camera.id")

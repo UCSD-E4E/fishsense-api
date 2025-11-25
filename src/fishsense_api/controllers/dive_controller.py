@@ -4,12 +4,14 @@
 from typing import List
 
 from fastapi import Depends
+from fastapi.encoders import jsonable_encoder
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from fishsense_api.database import get_async_session
 from fishsense_api.models.dive import Dive
 from fishsense_api.models.image import Image
+from fishsense_api.models.laser_extrinsics import LaserExtrinsics
 from fishsense_api.server import app
 
 
@@ -45,3 +47,45 @@ async def get_dive(
     query = select(Dive).where(Dive.id == dive_id)
 
     return (await session.exec(query)).first()
+
+
+@app.get("/api/v1/dives/{dive_id}/laser-extrinsics/")
+async def get_laser_extrinsics_for_dive(
+    dive_id: int, session: AsyncSession = Depends(get_async_session)
+) -> LaserExtrinsics | None:
+    """Retrieve all laser extrinsics for a given dive ID."""
+    # With max date filter
+    query = (
+        select(LaserExtrinsics)
+        .where(LaserExtrinsics.dive_id == dive_id)
+        .where(
+            LaserExtrinsics.created_at
+            == select(LaserExtrinsics.created_at)
+            .where(LaserExtrinsics.dive_id == dive_id)
+            .order_by(LaserExtrinsics.created_at.desc())
+            .limit(1)
+            .scalar_subquery()
+        )
+    )
+
+    results = await session.exec(query)
+    return results.first()
+
+
+@app.put("/api/v1/dives/{dive_id}/laser-extrinsics/", status_code=201)
+async def put_laser_extrinsics_for_dive(
+    dive_id: int,
+    extrinsics: LaserExtrinsics,
+    session: AsyncSession = Depends(get_async_session),
+) -> int:
+    """Create or update laser extrinsics for a given dive ID."""
+    extrinsics = LaserExtrinsics.model_validate(jsonable_encoder(extrinsics))
+    extrinsics.dive_id = dive_id
+
+    extrinsics = await session.merge(extrinsics)
+    await session.flush()
+
+    extrinsics_id = extrinsics.id
+
+    await session.commit()
+    return extrinsics_id
