@@ -4,6 +4,7 @@ import asyncio
 from typing import List
 
 from fastapi import Depends
+from fastapi.encoders import jsonable_encoder
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -64,7 +65,13 @@ async def get_clusters(
 
     cluster_mappings = await asyncio.gather(*[session.exec(q) for q in cluster_queries])
     return [
-        DiveFrameClusterJson(id=c.id, image_ids=[m.image_id for m in ms])
+        DiveFrameClusterJson(
+            id=c.id,
+            image_ids=[m.image_id for m in ms],
+            data_source=c.data_source,
+            updated_at=c.updated_at,
+            dive_id=c.dive_id,
+        )
         for c, ms in zip(clusters, cluster_mappings)
     ]
 
@@ -72,17 +79,26 @@ async def get_clusters(
 @app.post("/api/v1/dives/{dive_id}/images/clusters/", status_code=201)
 async def post_cluster(
     dive_id: int,
-    image_ids: List[int],
+    dive_frame_cluster: DiveFrameClusterJson,
     session: AsyncSession = Depends(get_async_session),
 ) -> int:
     """Create a new image cluster for a specific dive ID."""
+    dive_frame_cluster = DiveFrameClusterJson.model_validate(
+        jsonable_encoder(dive_frame_cluster)
+    )
     images = (
         await session.exec(
-            select(Image).where(Image.id.in_(image_ids))  # pylint: disable=no-member
+            select(Image).where(
+                Image.id.in_(dive_frame_cluster.image_ids)
+            )  # pylint: disable=no-member
         )
     ).all()
 
-    dive_frame_cluster = DiveFrameCluster(dive_id=dive_id)
+    dive_frame_cluster = DiveFrameCluster(
+        dive_id=dive_id,
+        data_source=dive_frame_cluster.data_source,
+        updated_at=dive_frame_cluster.updated_at,
+    )
     dive_frame_cluster = await session.merge(dive_frame_cluster)
     await session.flush()  # Ensure ID is populated
 

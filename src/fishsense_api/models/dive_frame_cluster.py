@@ -31,5 +31,9 @@ class DiveFrameClusterImageMapping(SQLModel, table=True):
 class DiveFrameClusterJson(BaseModel):
     """Pydantic model for serializing DiveFrameCluster data."""
 
-    id: int
+    id: int | None
     image_ids: List[int]
+    data_source: DataSource
+    updated_at: datetime | None
+
+    dive_id: int | None
