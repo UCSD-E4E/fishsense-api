@@ -48,18 +48,18 @@ async def get_dive_images(
     return (await session.exec(query)).all()
 
 
-@app.get("/api/v1/dives/{dive_id}/images/clusters/")
+@app.get("/api/v1/dives/{dive_id}/images/clusters/{data_source}")
 async def get_clusters(
-    dive_id: int, session: AsyncSession = Depends(get_async_session)
+    dive_id: int, data_source: str, session: AsyncSession = Depends(get_async_session)
 ) -> List[DiveFrameClusterJson] | None:
     """Retrieve all image clusters associated with a specific dive ID."""
     query = select(DiveFrameCluster).where(DiveFrameCluster.dive_id == dive_id)
 
     clusters = (await session.exec(query)).all()
     cluster_queries = [
-        select(DiveFrameClusterImageMapping).where(
-            DiveFrameClusterImageMapping.dive_frame_cluster_id == c.id
-        )
+        select(DiveFrameClusterImageMapping)
+        .where(DiveFrameClusterImageMapping.dive_frame_cluster_id == c.id)
+        .where(DiveFrameCluster.data_source == data_source)
         for c in clusters
     ]
 
@@ -71,6 +71,7 @@ async def get_clusters(
             data_source=c.data_source,
             updated_at=c.updated_at,
             dive_id=c.dive_id,
+            fish_id=c.fish_id,
         )
         for c, ms in zip(clusters, cluster_mappings)
     ]
@@ -98,6 +99,7 @@ async def post_cluster(
         dive_id=dive_id,
         data_source=dive_frame_cluster.data_source,
         updated_at=dive_frame_cluster.updated_at,
+        fish_id=dive_frame_cluster.fish_id,
     )
     dive_frame_cluster = await session.merge(dive_frame_cluster)
     await session.flush()  # Ensure ID is populated
@@ -116,3 +118,56 @@ async def post_cluster(
     await session.commit()
 
     return dive_frame_cluster_id
+
+
+@app.put("/api/v1/dives/{dive_id}/images/clusters/{dive_frame_cluster_id}")
+async def put_cluster(
+    dive_id: int,
+    dive_frame_cluster_id: int,
+    dive_frame_cluster: DiveFrameClusterJson,
+    session: AsyncSession = Depends(get_async_session),
+) -> int:
+    """Update an existing image cluster for a specific dive ID."""
+    dive_frame_cluster = DiveFrameClusterJson.model_validate(
+        jsonable_encoder(dive_frame_cluster)
+    )
+    images = (
+        await session.exec(
+            select(Image).where(
+                Image.id.in_(dive_frame_cluster.image_ids)
+            )  # pylint: disable=no-member
+        )
+    ).all()
+
+    dive_frame_cluster = DiveFrameCluster(
+        id=dive_frame_cluster_id,
+        dive_id=dive_id,
+        data_source=dive_frame_cluster.data_source,
+        updated_at=dive_frame_cluster.updated_at,
+        fish_id=dive_frame_cluster.fish_id,
+    )
+    dive_frame_cluster = await session.merge(dive_frame_cluster)
+    await session.flush()  # Ensure ID is populated
+
+    # Clear existing mappings
+    mappings_to_delete = await session.exec(
+        select(DiveFrameClusterImageMapping).where(
+            DiveFrameClusterImageMapping.dive_frame_cluster_id == dive_frame_cluster.id
+        )
+    )
+    await asyncio.gather(
+        *[session.delete(mapping) for mapping in mappings_to_delete.all()]
+    )
+
+    mappings = []
+    for image in images:
+        mapping = DiveFrameClusterImageMapping(
+            dive_frame_cluster_id=dive_frame_cluster.id, image_id=image.id
+        )
+        mappings.append(mapping)
+
+    session.add_all(mappings)
+
+    await session.commit()
+
+    return dive_frame_cluster.id

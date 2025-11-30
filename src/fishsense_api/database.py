@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import create_async_engine
@@ -20,10 +21,13 @@ from fishsense_api.models.dive_frame_cluster import (
 )
 from fishsense_api.models.dive_slate import DiveSlate
 from fishsense_api.models.dive_slate_label import DiveSlateLabel
+from fishsense_api.models.fish import Fish
 from fishsense_api.models.head_tail_label import HeadTailLabel
 from fishsense_api.models.image import Image
 from fishsense_api.models.laser_extrinsics import LaserExtrinsics
 from fishsense_api.models.laser_label import LaserLabel
+from fishsense_api.models.measurement import Measurement
+from fishsense_api.models.species import Species
 from fishsense_api.models.species_label import SpeciesLabel
 from fishsense_api.models.user import User
 
@@ -34,7 +38,12 @@ class Database:
     """Database interaction class for FishSense API Workflow Worker."""
 
     def __init__(self, database_url: str):
-        self.engine = create_async_engine(database_url)
+        self.engine = create_async_engine(
+            database_url,
+            pool_size=10,  # Maintain a minimum of 10 connections in the pool
+            max_overflow=20,  # Allow up to 20 additional connections beyond pool_size
+            pool_recycle=3600,  # Recycle connections after 1 hour (in seconds))
+        )
 
     async def init_database(self, conn: AsyncSession) -> None:
         """Initialize the database by creating all tables."""
@@ -49,6 +58,7 @@ DATABASE = Database(PG_CONNECTION_STRING)
 __ASYNC_SESSION_LOCAL = sessionmaker(
     DATABASE.engine, class_=AsyncSession, expire_on_commit=False
 )
+__SEMAPHORE = asyncio.Semaphore(20)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
@@ -57,5 +67,6 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     Yields:
         AsyncSession: An asynchronous database session.
     """
-    async with __ASYNC_SESSION_LOCAL() as session:
-        yield session
+    async with __SEMAPHORE:
+        async with __ASYNC_SESSION_LOCAL() as session:
+            yield session

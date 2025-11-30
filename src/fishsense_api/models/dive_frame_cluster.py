@@ -17,6 +17,7 @@ class DiveFrameCluster(SQLModel, table=True):
     updated_at: datetime | None = Field(sa_type=DateTime(timezone=True), default=None)
 
     dive_id: int | None = Field(default=None, foreign_key="dive.id")
+    fish_id: int | None = Field(default=None, foreign_key="fish.id")
 
 
 class DiveFrameClusterImageMapping(SQLModel, table=True):
@@ -37,3 +38,4 @@ class DiveFrameClusterJson(BaseModel):
     updated_at: datetime | None
 
     dive_id: int | None
+    fish_id: int | None
