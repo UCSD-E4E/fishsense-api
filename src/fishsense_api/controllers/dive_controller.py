@@ -62,7 +62,7 @@ async def get_laser_extrinsics_for_dive(
             LaserExtrinsics.created_at
             == select(LaserExtrinsics.created_at)
             .where(LaserExtrinsics.dive_id == dive_id)
-            .order_by(LaserExtrinsics.created_at.desc())
+            .order_by(LaserExtrinsics.created_at.desc())  # pylint: disable=no-member
             .limit(1)
             .scalar_subquery()
         )

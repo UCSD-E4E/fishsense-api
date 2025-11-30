@@ -1,3 +1,5 @@
+"""Fish controller for the FishSense API."""
+
 from fastapi import Depends
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession

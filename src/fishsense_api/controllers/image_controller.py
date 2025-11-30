@@ -90,8 +90,8 @@ async def post_cluster(
     images = (
         await session.exec(
             select(Image).where(
-                Image.id.in_(dive_frame_cluster.image_ids)
-            )  # pylint: disable=no-member
+                Image.id.in_(dive_frame_cluster.image_ids)  # pylint: disable=no-member
+            )
         )
     ).all()
 
@@ -134,8 +134,8 @@ async def put_cluster(
     images = (
         await session.exec(
             select(Image).where(
-                Image.id.in_(dive_frame_cluster.image_ids)
-            )  # pylint: disable=no-member
+                Image.id.in_(dive_frame_cluster.image_ids)  # pylint: disable=no-member
+            )
         )
     ).all()
 

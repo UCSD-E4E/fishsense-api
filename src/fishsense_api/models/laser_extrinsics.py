@@ -1,3 +1,5 @@
+"""Laser extrinsics model for the FishSense API."""
+
 from datetime import datetime
 from typing import List
 
@@ -5,6 +7,8 @@ from sqlmodel import JSON, Column, DateTime, Field, SQLModel
 
 
 class LaserExtrinsics(SQLModel, table=True):
+    """Laser extrinsics model representing laser calibration data in the database."""
+
     id: int | None = Field(default=None, primary_key=True)
     laser_position: List[float] = Field(default_factory=list, sa_column=Column(JSON))
     laser_axis: List[float] = Field(default_factory=list, sa_column=Column(JSON))
