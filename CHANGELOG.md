@@ -2,6 +2,25 @@
 
 <!-- version list -->
 
+## v1.11.0 (2025-11-30)
+
+### Bug Fixes
+
+- Pylint errors
+  ([`3e558da`](https://github.com/UCSD-E4E/fishsense-api/commit/3e558daa3d32416a869b4670af6d2e734e2d62b3))
+
+### Features
+
+- Be able to measure fish
+  ([`ec161b4`](https://github.com/UCSD-E4E/fishsense-api/commit/ec161b4cbd09b462c02c79eb38fb7135e0320cd3))
+
+- Create final groupings
+  ([`91d12c5`](https://github.com/UCSD-E4E/fishsense-api/commit/91d12c54e8480110f7dab36a7ef3d7e455c91f75))
+
+- Introduce laser extrinsics
+  ([`2961e80`](https://github.com/UCSD-E4E/fishsense-api/commit/2961e80beae39bfb3db0a292c676913c452fc740))
+
+
 ## v1.10.0 (2025-11-24)
 
 ### Features
