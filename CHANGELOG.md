@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.12.2 (2025-12-02)
+
+### Bug Fixes
+
+- Label studio id should be an int
+  ([`b6ca428`](https://github.com/UCSD-E4E/fishsense-api/commit/b6ca4282ccd0a8c5dc4f21e390b43266639c4108))
+
+
 ## v1.12.1 (2025-12-02)
 
 ### Bug Fixes
