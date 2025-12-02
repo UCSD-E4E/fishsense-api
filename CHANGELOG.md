@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.12.0 (2025-12-02)
+
+### Features
+
+- Add method for laser label by label studio id
+  ([`04d4b20`](https://github.com/UCSD-E4E/fishsense-api/commit/04d4b20ba7bf677eea4090c1a723bbfb9c363dbb))
+
+
 ## v1.11.0 (2025-11-30)
 
 ### Bug Fixes
