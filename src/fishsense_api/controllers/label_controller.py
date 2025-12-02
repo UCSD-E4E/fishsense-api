@@ -130,6 +130,21 @@ async def get_laser_label(
     return (await session.exec(query)).first()
 
 
+@app.get("/api/v1/labels/laser/label-studio/{label_studio_id}")
+async def get_laser_label_by_label_studio_id(
+    label_studio_id: str, session: AsyncSession = Depends(get_async_session)
+) -> LaserLabel | None:
+    """Retrieve a laser label for a given Label Studio ID."""
+
+    query = (
+        select(LaserLabel)
+        .where(LaserLabel.label_studio_id == label_studio_id)
+        .where(LaserLabel.superseded == False)
+    )
+
+    return (await session.exec(query)).first()
+
+
 @app.get("/api/v1/dives/{dive_id}/labels/laser")
 async def get_laser_labels_for_dive(
     dive_id: int, session: AsyncSession = Depends(get_async_session)
