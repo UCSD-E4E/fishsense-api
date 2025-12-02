@@ -138,7 +138,7 @@ async def get_laser_label_by_label_studio_id(
 
     query = (
         select(LaserLabel)
-        .where(LaserLabel.label_studio_id == label_studio_id)
+        .where(LaserLabel.label_studio_task_id == label_studio_id)
         .where(LaserLabel.superseded == False)
     )
 
