@@ -32,6 +32,17 @@ async def get_user(
     return result.first()
 
 
+@app.get("/api/v1/users/label-studio/{label_studio_id}")
+async def get_user_by_label_studio_id(
+    label_studio_id: int, session: AsyncSession = Depends(get_async_session)
+) -> User | None:
+    """Retrieve a user by their Label Studio ID."""
+
+    query = select(User).where(User.label_studio_id == label_studio_id)
+    result = await session.exec(query)
+    return result.first()
+
+
 @app.get("/api/v1/users/email/{email}")
 async def get_user_by_email(
     email: str, session: AsyncSession = Depends(get_async_session)
