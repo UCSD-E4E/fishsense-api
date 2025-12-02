@@ -132,7 +132,7 @@ async def get_laser_label(
 
 @app.get("/api/v1/labels/laser/label-studio/{label_studio_id}")
 async def get_laser_label_by_label_studio_id(
-    label_studio_id: str, session: AsyncSession = Depends(get_async_session)
+    label_studio_id: int, session: AsyncSession = Depends(get_async_session)
 ) -> LaserLabel | None:
     """Retrieve a laser label for a given Label Studio ID."""
 
