@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.12.1 (2025-12-02)
+
+### Bug Fixes
+
+- Typo in laser label task id
+  ([`7cc7aca`](https://github.com/UCSD-E4E/fishsense-api/commit/7cc7acad435ec48597727670b5447873253a8c46))
+
+
 ## v1.12.0 (2025-12-02)
 
 ### Features
