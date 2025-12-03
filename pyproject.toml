@@ -1,6 +1,6 @@
 [project]
 name = "fishsense-api"
-version = "1.13.0"
+version = "1.12.2"
 description = "This is the FishSense API server."
 readme = "README.md"
 requires-python = ">=3.13"
@@ -23,7 +23,7 @@ dev = [
 ]
 
 [tool.semantic_release]
-version_variables = ["fishsense_api/__init__.py:__version__"]
+version_variables = ["src/fishsense_api/__version__.py:__version__"]
 version_toml = [
     "pyproject.toml:project.version",
 ]
