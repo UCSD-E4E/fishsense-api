@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v1.14.0 (2025-12-03)
+
+### Bug Fixes
+
+- Properly set the version number
+  ([`c9c9574`](https://github.com/UCSD-E4E/fishsense-api/commit/c9c9574fed6869492f5c28c7a85f5b56528573c8))
+
+### Features
+
+- Specify version module for semantic release
+  ([`ce46b15`](https://github.com/UCSD-E4E/fishsense-api/commit/ce46b1548aae8fc4275fa1ec7dc692f602f354e1))
+
+
 ## v1.13.0 (2025-12-02)
 
 ### Features
