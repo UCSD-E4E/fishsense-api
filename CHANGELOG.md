@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.14.1 (2025-12-08)
+
+### Bug Fixes
+
+- 500 error in clustering
+  ([`b496e7c`](https://github.com/UCSD-E4E/fishsense-api/commit/b496e7ce9ee4c181f8353f46845fc3ddf7ae7f19))
+
+
 ## v1.14.0 (2025-12-03)
 
 ### Bug Fixes
