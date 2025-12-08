@@ -61,6 +61,10 @@ async def get_clusters(
     clusters = (await session.exec(query)).all()
     cluster_mapping_query = (
         select(DiveFrameClusterImageMapping)
+        .join(
+            DiveFrameCluster,
+            DiveFrameClusterImageMapping.dive_frame_cluster_id == DiveFrameCluster.id,
+        )
         .where(DiveFrameCluster.data_source == data_source)
         .where(DiveFrameCluster.dive_id == dive_id)
     )
