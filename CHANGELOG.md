@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.14.2 (2025-12-08)
+
+### Bug Fixes
+
+- Not returning proper groups
+  ([`5583827`](https://github.com/UCSD-E4E/fishsense-api/commit/5583827552feb092d5011890c6ba3127856e2aa8))
+
+
 ## v1.14.1 (2025-12-08)
 
 ### Bug Fixes
