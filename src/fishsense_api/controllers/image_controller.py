@@ -1,7 +1,7 @@
 """Image Controller for FishSense API."""
 
 import asyncio
-from typing import List
+from typing import Dict, List
 
 from fastapi import Depends
 from fastapi.encoders import jsonable_encoder
@@ -9,6 +9,7 @@ from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from fishsense_api.database import get_async_session
+from fishsense_api.models.data_source import DataSource
 from fishsense_api.models.dive_frame_cluster import (
     DiveFrameCluster,
     DiveFrameClusterImageMapping,
@@ -50,30 +51,38 @@ async def get_dive_images(
 
 @app.get("/api/v1/dives/{dive_id}/images/clusters/{data_source}")
 async def get_clusters(
-    dive_id: int, data_source: str, session: AsyncSession = Depends(get_async_session)
+    dive_id: int,
+    data_source: DataSource,
+    session: AsyncSession = Depends(get_async_session),
 ) -> List[DiveFrameClusterJson] | None:
     """Retrieve all image clusters associated with a specific dive ID."""
     query = select(DiveFrameCluster).where(DiveFrameCluster.dive_id == dive_id)
 
     clusters = (await session.exec(query)).all()
-    cluster_queries = [
+    cluster_mapping_query = (
         select(DiveFrameClusterImageMapping)
-        .where(DiveFrameClusterImageMapping.dive_frame_cluster_id == c.id)
         .where(DiveFrameCluster.data_source == data_source)
-        for c in clusters
-    ]
+        .where(DiveFrameCluster.dive_id == dive_id)
+    )
+    cluster_mappings = (await session.exec(cluster_mapping_query)).all()
 
-    cluster_mappings = await asyncio.gather(*[session.exec(q) for q in cluster_queries])
+    cluster_mappings_dict: Dict[int, List[DiveFrameClusterImageMapping]] = {}
+    for mappings in cluster_mappings:
+        if mappings.dive_frame_cluster_id not in cluster_mappings_dict:
+            cluster_mappings_dict[mappings.dive_frame_cluster_id] = []
+
+        cluster_mappings_dict[mappings.dive_frame_cluster_id].append(mappings)
+
     return [
         DiveFrameClusterJson(
             id=c.id,
-            image_ids=[m.image_id for m in ms],
+            image_ids=[m.image_id for m in cluster_mappings_dict[c.id]],
             data_source=c.data_source,
             updated_at=c.updated_at,
             dive_id=c.dive_id,
             fish_id=c.fish_id,
         )
-        for c, ms in zip(clusters, cluster_mappings)
+        for c in clusters
     ]
 
 
