@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.15.0 (2025-12-19)
+
+### Features
+
+- Add endpoint to grab headtail label by label studio id
+  ([`64a5b9a`](https://github.com/UCSD-E4E/fishsense-api/commit/64a5b9a71388d3212f5e7b43c91581b1de901437))
+
+
 ## v1.14.2 (2025-12-08)
 
 ### Bug Fixes
