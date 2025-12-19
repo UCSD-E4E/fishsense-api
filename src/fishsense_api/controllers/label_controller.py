@@ -115,6 +115,20 @@ async def put_headtail_label(
     return label_id
 
 
+@app.get("/api/v1/labels/headtail/label-studio/{label_studio_id}")
+async def get_headtail_label_by_label_studio_id(
+    label_studio_id: int, session: AsyncSession = Depends(get_async_session)
+) -> HeadTailLabel | None:
+    """Retrieve a head-tail label for a given Label Studio ID."""
+    query = (
+        select(HeadTailLabel)
+        .where(HeadTailLabel.label_studio_task_id == label_studio_id)
+        .where(HeadTailLabel.superseded == False)
+    )
+
+    return (await session.exec(query)).first()
+
+
 @app.get("/api/v1/labels/laser/{image_id}")
 async def get_laser_label(
     image_id: int, session: AsyncSession = Depends(get_async_session)
