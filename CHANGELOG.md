@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.15.1 (2026-01-05)
+
+### Bug Fixes
+
+- Use the correct deserializer for datetimes in api
+  ([`789ac28`](https://github.com/UCSD-E4E/fishsense-api/commit/789ac28cccf3cbbc10bb74694bece8247175b30a))
+
+
 ## v1.15.0 (2025-12-19)
 
 ### Features
