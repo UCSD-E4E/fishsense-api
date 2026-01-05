@@ -3,10 +3,11 @@
 from datetime import datetime
 from typing import Any, Dict, List, Tuple
 
-from sqlmodel import JSON, Column, DateTime, Field, SQLModel
+from sqlmodel import JSON, Column, DateTime, Field
 
+from fishsense_api.models.model_base import ModelBase
 
-class DiveSlateLabel(SQLModel, table=True):
+class DiveSlateLabel(ModelBase, table=True):
     # pylint: disable=R0801
     """Model representing slate labels."""
 

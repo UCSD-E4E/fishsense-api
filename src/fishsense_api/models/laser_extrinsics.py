@@ -3,10 +3,12 @@
 from datetime import datetime
 from typing import List
 
-from sqlmodel import JSON, Column, DateTime, Field, SQLModel
+from sqlmodel import JSON, Column, DateTime, Field
+
+from fishsense_api.models.model_base import ModelBase
 
 
-class LaserExtrinsics(SQLModel, table=True):
+class LaserExtrinsics(ModelBase, table=True):
     """Laser extrinsics model representing laser calibration data in the database."""
 
     id: int | None = Field(default=None, primary_key=True)

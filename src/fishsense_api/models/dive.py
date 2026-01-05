@@ -2,12 +2,13 @@
 
 from datetime import datetime
 
-from sqlmodel import Column, DateTime, Enum, Field, SQLModel
+from sqlmodel import Column, DateTime, Enum, Field
 
+from fishsense_api.models.model_base import ModelBase
 from fishsense_api.models.priority import Priority
 
 
-class Dive(SQLModel, table=True):
+class Dive(ModelBase, table=True):
     """Model representing a dive."""
 
     id: int | None = Field(default=None, primary_key=True)

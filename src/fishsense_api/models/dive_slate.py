@@ -3,10 +3,12 @@
 from datetime import datetime
 from typing import List, Tuple
 
-from sqlmodel import JSON, Column, DateTime, Field, SQLModel
+from sqlmodel import JSON, Column, DateTime, Field
+
+from fishsense_api.models.model_base import ModelBase
 
 
-class DiveSlate(SQLModel, table=True):
+class DiveSlate(ModelBase, table=True):
     """Model representing a dive slate."""
 
     id: int = Field(default=None, primary_key=True)

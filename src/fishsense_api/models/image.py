@@ -2,10 +2,12 @@
 
 from datetime import datetime
 
-from sqlmodel import DateTime, Field, SQLModel
+from sqlmodel import DateTime, Field
+
+from fishsense_api.models.model_base import ModelBase
 
 
-class Image(SQLModel, table=True):
+class Image(ModelBase, table=True):
     """Model representing an image."""
 
     id: int | None = Field(default=None, primary_key=True)

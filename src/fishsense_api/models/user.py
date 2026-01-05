@@ -2,10 +2,12 @@
 
 from datetime import datetime
 
-from sqlmodel import DateTime, Field, SQLModel
+from sqlmodel import DateTime, Field
+
+from fishsense_api.models.model_base import ModelBase
 
 
-class User(SQLModel, table=True):
+class User(ModelBase, table=True):
     """Model representing a user."""
 
     id: int | None = Field(default=None, primary_key=True)

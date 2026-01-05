@@ -5,10 +5,12 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Dict
 
-from sqlmodel import JSON, Column, DateTime, Field, SQLModel
+from sqlmodel import JSON, Column, DateTime, Field
+
+from fishsense_api.models.model_base import ModelBase
 
 
-class LaserLabel(SQLModel, table=True):
+class LaserLabel(ModelBase, table=True):
     # pylint: disable=R0801
     """Model representing a laser label."""
 
