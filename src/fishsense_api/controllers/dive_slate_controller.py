@@ -37,5 +37,4 @@ async def put_dive_slate(
 
     dive_slate_id = dive_slate.id
 
-    await session.commit()
     return dive_slate_id

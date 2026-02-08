@@ -60,7 +60,6 @@ async def put_dive_slate_label(
 
     label_id = label.id
 
-    await session.commit()
     return label_id
 
 
@@ -111,7 +110,6 @@ async def put_headtail_label(
 
     label_id = label.id
 
-    await session.commit()
     return label_id
 
 
@@ -191,7 +189,6 @@ async def put_laser_label(
 
     label_id = label.id
 
-    await session.commit()
     return label_id
 
 
@@ -236,5 +233,4 @@ async def put_species_label(
 
     label_id = label.id
 
-    await session.commit()
     return label_id

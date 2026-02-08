@@ -40,9 +40,11 @@ class Database:
     def __init__(self, database_url: str):
         self.engine = create_async_engine(
             database_url,
-            pool_size=10,  # Maintain a minimum of 10 connections in the pool
-            max_overflow=20,  # Allow up to 20 additional connections beyond pool_size
-            pool_recycle=3600,  # Recycle connections after 1 hour (in seconds))
+            pool_size=5,  # Maintain a minimum of 5 connections in the pool
+            max_overflow=2,  # Allow up to 2 additional connections beyond pool_size
+            pool_timeout=30,  # Wait up to 30 seconds for a connection before raising an error
+            pool_recycle=3600,  # Recycle connections after 1 hour to prevent stale connections
+            pool_pre_ping=True,  # Enable pre-ping to check if connections are alive before using them
         )
 
     async def init_database(self, conn: AsyncSession) -> None:
@@ -58,7 +60,6 @@ DATABASE = Database(PG_CONNECTION_STRING)
 __ASYNC_SESSION_LOCAL = sessionmaker(
     DATABASE.engine, class_=AsyncSession, expire_on_commit=False
 )
-__SEMAPHORE = asyncio.Semaphore(20)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
@@ -67,6 +68,10 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     Yields:
         AsyncSession: An asynchronous database session.
     """
-    async with __SEMAPHORE:
-        async with __ASYNC_SESSION_LOCAL() as session:
+    async with __ASYNC_SESSION_LOCAL() as session:
+        try:
             yield session
+            await session.commit()
+        except:
+            await session.rollback()
+            raise

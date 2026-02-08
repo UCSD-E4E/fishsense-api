@@ -61,7 +61,6 @@ async def create_user(
     """Create a new user."""
     user = User.model_validate(jsonable_encoder(user))
     session.add(user)
-    await session.commit()
     await session.refresh(user)
     return user.id
 
@@ -81,5 +80,4 @@ async def create_or_update_user(
 
     user_id = user.id
 
-    await session.commit()
     return user_id

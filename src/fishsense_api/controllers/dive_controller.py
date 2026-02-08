@@ -87,5 +87,4 @@ async def put_laser_extrinsics_for_dive(
 
     extrinsics_id = extrinsics.id
 
-    await session.commit()
     return extrinsics_id

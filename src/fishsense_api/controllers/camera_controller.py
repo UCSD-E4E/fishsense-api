@@ -56,5 +56,4 @@ async def put_camera_intrinsics(
 
     intrinsics_id = intrinsics.id
 
-    await session.commit()
     return intrinsics_id

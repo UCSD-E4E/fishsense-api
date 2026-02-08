@@ -128,8 +128,6 @@ async def post_cluster(
 
     session.add_all(mappings)
 
-    await session.commit()
-
     return dive_frame_cluster_id
 
 
@@ -180,7 +178,5 @@ async def put_cluster(
         mappings.append(mapping)
 
     session.add_all(mappings)
-
-    await session.commit()
 
     return dive_frame_cluster.id

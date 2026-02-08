@@ -42,7 +42,6 @@ async def post_fish(
 
     fish_id = fish.id
 
-    await session.commit()
     return fish_id
 
 
@@ -59,7 +58,6 @@ async def post_measurement(
 
     measurement_id = measurement.id
 
-    await session.commit()
     return measurement_id
 
 
@@ -84,5 +82,4 @@ async def post_species(
 
     species_id = species.id
 
-    await session.commit()
     return species_id
