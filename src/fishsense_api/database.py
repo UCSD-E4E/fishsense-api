@@ -44,7 +44,7 @@ class Database:
             max_overflow=2,  # Allow up to 2 additional connections beyond pool_size
             pool_timeout=30,  # Wait up to 30 seconds for a connection before raising an error
             pool_recycle=3600,  # Recycle connections after 1 hour to prevent stale connections
-            pool_pre_ping=True,  # Enable pre-ping to check if connections are alive before using them
+            pool_pre_ping=True,  # pre-ping to check if connections are alive before using them
         )
 
     async def init_database(self, conn: AsyncSession) -> None:
