@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v1.15.3 (2026-02-08)
+
+### Bug Fixes
+
+- Pydantic warnings
+  ([`a740fd6`](https://github.com/UCSD-E4E/fishsense-api/commit/a740fd6976d642f7859ba5b134261dae148bb285))
+
+### Chores
+
+- **deps**: Bump urllib3 from 2.5.0 to 2.6.3
+  ([`3325fee`](https://github.com/UCSD-E4E/fishsense-api/commit/3325feeefe6baef0170d5b758124a6681954c9f0))
+
+
 ## v1.15.2 (2026-02-08)
 
 ### Bug Fixes
