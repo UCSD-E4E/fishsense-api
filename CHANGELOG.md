@@ -2,6 +2,17 @@
 
 <!-- version list -->
 
+## v1.15.2 (2026-02-08)
+
+### Bug Fixes
+
+- Pylint errors
+  ([`bd3ba38`](https://github.com/UCSD-E4E/fishsense-api/commit/bd3ba38f4e3acf6f114f8caf9a707d33b593f0e6))
+
+- Reduce deadlocks for database
+  ([`359f457`](https://github.com/UCSD-E4E/fishsense-api/commit/359f457619d7a6008888934771760dfe3c94a2a6))
+
+
 ## v1.15.1 (2026-01-05)
 
 ### Bug Fixes
