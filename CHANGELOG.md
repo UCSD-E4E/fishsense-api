@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.16.0 (2026-02-12)
+
+### Features
+
+- Reintroduce more focused devcontainer
+  ([`3ebbd06`](https://github.com/UCSD-E4E/fishsense-api/commit/3ebbd0692b7ed1712f7e271590d5e4c9b0e2724a))
+
+
 ## v1.15.3 (2026-02-08)
 
 ### Bug Fixes
