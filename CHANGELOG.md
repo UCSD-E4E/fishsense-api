@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v1.18.0 (2026-02-24)
+
+### Bug Fixes
+
+- Use fastapi HTTPException in label_controller and redact email PII from logs
+  ([`23c9a4d`](https://github.com/UCSD-E4E/fishsense-api/commit/23c9a4dae274d42879f679b90a103950475c3052))
+
+### Features
+
+- Add additional logging to user controller for 404 debugging
+  ([`806cb2c`](https://github.com/UCSD-E4E/fishsense-api/commit/806cb2c5779032d0e49ca2876302a9bdcdf4a5b1))
+
+- Add logging to all controllers for easier debugging
+  ([`5d60e1b`](https://github.com/UCSD-E4E/fishsense-api/commit/5d60e1b7b1995e47f719f419a7342c568219536a))
+
+
 ## v1.17.0 (2026-02-24)
 
 ### Features
