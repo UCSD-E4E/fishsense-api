@@ -35,9 +35,13 @@ async def get_user(
     query = select(User).where(User.id == user_id)
     result = await session.exec(query)
     user = result.first()
+    logger.debug("Query result for user with id=%d: %s", user_id, user)
     if user is None:
-        logger.warning("User with id=%d not found", user_id)
+        logger.warning(
+            "User with id=%d not found; raising HTTPException 404", user_id
+        )
         raise HTTPException(status_code=404, detail="User not found")
+    logger.debug("User with id=%d found successfully", user_id)
     return user
 
 
@@ -51,11 +55,16 @@ async def get_user_by_label_studio_id(
     query = select(User).where(User.label_studio_id == label_studio_id)
     result = await session.exec(query)
     user = result.first()
+    logger.debug(
+        "Query result for user with label_studio_id=%d: %s", label_studio_id, user
+    )
     if user is None:
         logger.warning(
-            "User with label_studio_id=%d not found", label_studio_id
+            "User with label_studio_id=%d not found; raising HTTPException 404",
+            label_studio_id,
         )
         raise HTTPException(status_code=404, detail="User not found")
+    logger.debug("User with label_studio_id=%d found successfully", label_studio_id)
     return user
 
 
@@ -69,9 +78,13 @@ async def get_user_by_email(
     query = select(User).where(User.email == email)
     result = await session.exec(query)
     user = result.first()
+    logger.debug("Query result for user with email=%s: %s", email, user)
     if user is None:
-        logger.warning("User with email=%s not found", email)
+        logger.warning(
+            "User with email=%s not found; raising HTTPException 404", email
+        )
         raise HTTPException(status_code=404, detail="User not found")
+    logger.debug("User with email=%s found successfully", email)
     return user
 
 
