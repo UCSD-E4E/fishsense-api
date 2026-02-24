@@ -1,6 +1,7 @@
 """Image Controller for FishSense API."""
 
 import asyncio
+import logging
 from typing import Dict, List
 
 from fastapi import Depends, HTTPException
@@ -18,16 +19,20 @@ from fishsense_api.models.dive_frame_cluster import (
 from fishsense_api.models.image import Image
 from fishsense_api.server import app
 
+logger = logging.getLogger(__name__)
+
 
 @app.get("/api/v1/images/{image_id}")
 async def get_image(
     image_id: int, session: AsyncSession = Depends(get_async_session)
 ) -> Image | None:
     """Retrieve an image by its ID."""
+    logger.debug("Retrieving image with id=%d", image_id)
     query = select(Image).where(Image.id == image_id)
 
     image = (await session.exec(query)).first()
     if image is None:
+        logger.warning("Image with id=%d not found", image_id)
         raise HTTPException(status_code=404, detail="Image not found")
     return image
 
@@ -37,10 +42,12 @@ async def get_image_by_checksum(
     checksum: str, session: AsyncSession = Depends(get_async_session)
 ) -> Image | None:
     """Retrieve an image by its checksum."""
+    logger.debug("Retrieving image with checksum=%s", checksum)
     query = select(Image).where(Image.checksum == checksum)
 
     image = (await session.exec(query)).first()
     if image is None:
+        logger.warning("Image with checksum=%s not found", checksum)
         raise HTTPException(status_code=404, detail="Image not found")
     return image
 
@@ -50,10 +57,12 @@ async def get_dive_images(
     dive_id: int, session: AsyncSession = Depends(get_async_session)
 ) -> List[Image] | None:
     """Retrieve all images associated with a specific dive ID."""
+    logger.debug("Retrieving images for dive with id=%d", dive_id)
     query = select(Image).where(Image.dive_id == dive_id)
 
     images = (await session.exec(query)).all()
     if not images:
+        logger.warning("Images for dive with id=%d not found", dive_id)
         raise HTTPException(status_code=404, detail="Images not found")
     return images
 
@@ -65,6 +74,11 @@ async def get_clusters(
     session: AsyncSession = Depends(get_async_session),
 ) -> List[DiveFrameClusterJson] | None:
     """Retrieve all image clusters associated with a specific dive ID."""
+    logger.debug(
+        "Retrieving image clusters for dive with id=%d and data_source=%s",
+        dive_id,
+        data_source,
+    )
     query = select(DiveFrameCluster).where(DiveFrameCluster.dive_id == dive_id)
 
     clusters = (await session.exec(query)).all()
@@ -106,6 +120,7 @@ async def post_cluster(
     session: AsyncSession = Depends(get_async_session),
 ) -> int:
     """Create a new image cluster for a specific dive ID."""
+    logger.debug("Creating a new image cluster for dive with id=%d", dive_id)
     dive_frame_cluster = DiveFrameClusterJson.model_validate(
         jsonable_encoder(dive_frame_cluster)
     )
@@ -148,6 +163,11 @@ async def put_cluster(
     session: AsyncSession = Depends(get_async_session),
 ) -> int:
     """Update an existing image cluster for a specific dive ID."""
+    logger.debug(
+        "Updating image cluster with id=%d for dive with id=%d",
+        dive_frame_cluster_id,
+        dive_id,
+    )
     dive_frame_cluster = DiveFrameClusterJson.model_validate(
         jsonable_encoder(dive_frame_cluster)
     )
