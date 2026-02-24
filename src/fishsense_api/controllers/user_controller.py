@@ -91,11 +91,19 @@ async def create_user(
     user: User, session: AsyncSession = Depends(get_async_session)
 ) -> int:
     """Create a new user."""
-    logger.debug("Creating a new user")
-    user = User.model_validate(jsonable_encoder(user))
-    session.add(user)
-    await session.refresh(user)
-    return user.id
+    logger.debug("Creating a new user with label_studio_id=%s", user.label_studio_id)
+    try:
+        user = User.model_validate(jsonable_encoder(user))
+        logger.debug("Validated user model with label_studio_id=%s", user.label_studio_id)
+        session.add(user)
+        logger.debug("User added to session; flushing to persist")
+        await session.flush()
+        await session.refresh(user)
+        logger.debug("User created successfully with id=%s", user.id)
+        return user.id
+    except Exception:
+        logger.exception("Failed to create user")
+        raise
 
 
 @app.put("/api/v1/users/{user_id}", status_code=201)
