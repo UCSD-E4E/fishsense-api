@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.17.0 (2026-02-24)
+
+### Features
+
+- Return 404s when user not found. add constraints to database
+  ([`0f49aba`](https://github.com/UCSD-E4E/fishsense-api/commit/0f49aba9ed6c4d93d50acfb0d973a70c38f507cd))
+
+
 ## v1.16.0 (2026-02-12)
 
 ### Features
