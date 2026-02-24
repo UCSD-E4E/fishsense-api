@@ -37,9 +37,7 @@ async def get_user(
     user = result.first()
     logger.debug("Query result for user with id=%d: %s", user_id, user)
     if user is None:
-        logger.warning(
-            "User with id=%d not found; raising HTTPException 404", user_id
-        )
+        logger.warning("User with id=%d not found; raising HTTPException 404", user_id)
         raise HTTPException(status_code=404, detail="User not found")
     logger.debug("User with id=%d found successfully", user_id)
     return user
@@ -94,7 +92,9 @@ async def create_user(
     logger.debug("Creating a new user with label_studio_id=%s", user.label_studio_id)
     try:
         user = User.model_validate(jsonable_encoder(user))
-        logger.debug("Validated user model with label_studio_id=%s", user.label_studio_id)
+        logger.debug(
+            "Validated user model with label_studio_id=%s", user.label_studio_id
+        )
         session.add(user)
         logger.debug("User added to session; flushing to persist")
         await session.flush()
