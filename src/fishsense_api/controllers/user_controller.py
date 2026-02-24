@@ -73,18 +73,16 @@ async def get_user_by_email(
     email: str, session: AsyncSession = Depends(get_async_session)
 ) -> User | None:
     """Retrieve a user by their email."""
-    logger.debug("Retrieving user with email=%s", email)
+    logger.debug("Retrieving user by email")
 
     query = select(User).where(User.email == email)
     result = await session.exec(query)
     user = result.first()
-    logger.debug("Query result for user with email=%s: %s", email, user)
+    logger.debug("Query result for user by email: %s", user)
     if user is None:
-        logger.warning(
-            "User with email=%s not found; raising HTTPException 404", email
-        )
+        logger.warning("User not found for provided email; raising HTTPException 404")
         raise HTTPException(status_code=404, detail="User not found")
-    logger.debug("User with email=%s found successfully", email)
+    logger.debug("User found successfully by email")
     return user
 
 

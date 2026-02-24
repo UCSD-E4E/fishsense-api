@@ -2,10 +2,9 @@
 """Label Controller for FishSense API."""
 
 import logging
-from http.client import HTTPException
 from typing import List
 
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
