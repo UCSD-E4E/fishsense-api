@@ -2,7 +2,7 @@
 
 from typing import List
 
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -29,7 +29,10 @@ async def get_user(
 
     query = select(User).where(User.id == user_id)
     result = await session.exec(query)
-    return result.first()
+    user = result.first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
 
 
 @app.get("/api/v1/users/label-studio/{label_studio_id}")
@@ -40,7 +43,10 @@ async def get_user_by_label_studio_id(
 
     query = select(User).where(User.label_studio_id == label_studio_id)
     result = await session.exec(query)
-    return result.first()
+    user = result.first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
 
 
 @app.get("/api/v1/users/email/{email}")
@@ -51,7 +57,10 @@ async def get_user_by_email(
 
     query = select(User).where(User.email == email)
     result = await session.exec(query)
-    return result.first()
+    user = result.first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
 
 
 @app.post("/api/v1/users/", status_code=201)

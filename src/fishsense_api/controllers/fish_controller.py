@@ -1,6 +1,6 @@
 """Fish controller for the FishSense API."""
 
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -28,7 +28,10 @@ async def get_fish(
     """Retrieve a fish by its ID."""
     query = select(Fish).where(Fish.id == fish_id)
 
-    return (await session.exec(query)).first()
+    fish = (await session.exec(query)).first()
+    if fish is None:
+        raise HTTPException(status_code=404, detail="Fish not found")
+    return fish
 
 
 @app.post("/api/v1/fish", status_code=201)
@@ -68,7 +71,10 @@ async def get_species_by_scientific_name(
     """Retrieve a species by its scientific name."""
     query = select(Species).where(Species.scientific_name == scientific_name)
 
-    return (await session.exec(query)).first()
+    species = (await session.exec(query)).first()
+    if species is None:
+        raise HTTPException(status_code=404, detail="Species not found")
+    return species
 
 
 @app.post("/api/v1/fish/species", status_code=201)

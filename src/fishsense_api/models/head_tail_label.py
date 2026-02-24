@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Dict
 
+from sqlalchemy import UniqueConstraint
 from sqlmodel import JSON, Column, DateTime, Field
 
 from fishsense_api.models.model_base import ModelBase
@@ -13,6 +14,14 @@ from fishsense_api.models.model_base import ModelBase
 class HeadTailLabel(ModelBase, table=True):
     # pylint: disable=R0801
     """Model representing a head-tail label."""
+
+    __table_args__ = (
+        UniqueConstraint(
+            "image_id",
+            "label_studio_project_id",
+            name="uq_headtail_image_project",
+        ),
+    )
 
     id: int | None = Field(default=None, primary_key=True)
     label_studio_task_id: int | None = Field(default=None, unique=True, index=True)

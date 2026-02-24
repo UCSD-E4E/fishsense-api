@@ -3,7 +3,7 @@
 
 from typing import List
 
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -46,7 +46,10 @@ async def get_dive(
     """Retrieve a dive by its ID."""
     query = select(Dive).where(Dive.id == dive_id)
 
-    return (await session.exec(query)).first()
+    dive = (await session.exec(query)).first()
+    if dive is None:
+        raise HTTPException(status_code=404, detail="Dive not found")
+    return dive
 
 
 @app.get("/api/v1/dives/{dive_id}/laser-extrinsics/")
@@ -68,8 +71,10 @@ async def get_laser_extrinsics_for_dive(
         )
     )
 
-    results = await session.exec(query)
-    return results.first()
+    laser_extrinsics = (await session.exec(query)).first()
+    if laser_extrinsics is None:
+        raise HTTPException(status_code=404, detail="Laser extrinsics not found")
+    return laser_extrinsics
 
 
 @app.put("/api/v1/dives/{dive_id}/laser-extrinsics/", status_code=201)

@@ -1,6 +1,7 @@
 # pylint: disable=C0121
 """Label Controller for FishSense API."""
 
+from http.client import HTTPException
 from typing import List
 
 from fastapi import Depends
@@ -41,8 +42,10 @@ async def get_dive_slate_labels_for_dive(
         .where(Dive.id == dive_id)
     )
 
-    results = await session.exec(query)
-    return results.all()
+    labels = (await session.exec(query)).all()
+    if not labels:
+        raise HTTPException(status_code=404, detail="Labels not found")
+    return labels
 
 
 @app.put("/api/v1/labels/dive-slate/{image_id}", status_code=201)
@@ -75,7 +78,10 @@ async def get_headtail_label(
         .where(HeadTailLabel.superseded == False)
     )
 
-    return (await session.exec(query)).first()
+    label = (await session.exec(query)).first()
+    if label is None:
+        raise HTTPException(status_code=404, detail="Label not found")
+    return label
 
 
 @app.get("/api/v1/dives/{dive_id}/labels/headtail")
@@ -91,8 +97,10 @@ async def get_headtail_labels_for_dive(
         .where(HeadTailLabel.superseded == False)
     )
 
-    results = await session.exec(query)
-    return results.all()
+    labels = (await session.exec(query)).all()
+    if not labels:
+        raise HTTPException(status_code=404, detail="Labels not found")
+    return labels
 
 
 @app.put("/api/v1/labels/headtail/{image_id}", status_code=201)
@@ -124,7 +132,10 @@ async def get_headtail_label_by_label_studio_id(
         .where(HeadTailLabel.superseded == False)
     )
 
-    return (await session.exec(query)).first()
+    label = (await session.exec(query)).first()
+    if label is None:
+        raise HTTPException(status_code=404, detail="Label not found")
+    return label
 
 
 @app.get("/api/v1/labels/laser/{image_id}")
@@ -139,7 +150,10 @@ async def get_laser_label(
         .where(LaserLabel.superseded == False)
     )
 
-    return (await session.exec(query)).first()
+    label = (await session.exec(query)).first()
+    if label is None:
+        raise HTTPException(status_code=404, detail="Label not found")
+    return label
 
 
 @app.get("/api/v1/labels/laser/label-studio/{label_studio_id}")
@@ -154,7 +168,10 @@ async def get_laser_label_by_label_studio_id(
         .where(LaserLabel.superseded == False)
     )
 
-    return (await session.exec(query)).first()
+    label = (await session.exec(query)).first()
+    if label is None:
+        raise HTTPException(status_code=404, detail="Label not found")
+    return label
 
 
 @app.get("/api/v1/dives/{dive_id}/labels/laser")
@@ -170,8 +187,10 @@ async def get_laser_labels_for_dive(
         .where(LaserLabel.superseded == False)
     )
 
-    results = await session.exec(query)
-    return results.all()
+    labels = (await session.exec(query)).all()
+    if not labels:
+        raise HTTPException(status_code=404, detail="Labels not found")
+    return labels
 
 
 @app.put("/api/v1/labels/laser/{image_id}", status_code=201)
@@ -204,8 +223,10 @@ async def get_species_labels_for_dive(
         .where(Dive.id == dive_id)
     )
 
-    results = await session.exec(query)
-    return results.all()
+    labels = (await session.exec(query)).all()
+    if not labels:
+        raise HTTPException(status_code=404, detail="Labels not found")
+    return labels
 
 
 @app.get("/api/v1/labels/species/{image_id}")
@@ -215,7 +236,10 @@ async def get_species_label(
     """Retrieve a species label for a given image ID."""
     query = select(SpeciesLabel).where(SpeciesLabel.image_id == image_id)
 
-    return (await session.exec(query)).first()
+    label = (await session.exec(query)).first()
+    if label is None:
+        raise HTTPException(status_code=404, detail="Label not found")
+    return label
 
 
 @app.put("/api/v1/labels/species/{image_id}", status_code=201)

@@ -2,13 +2,24 @@
 
 from datetime import datetime
 
-from sqlmodel import DateTime, Field
+from sqlmodel import DateTime, Field, UniqueConstraint
 
 from fishsense_api.models.model_base import ModelBase
 
 
 class User(ModelBase, table=True):
     """Model representing a user."""
+
+    __table_args__ = (
+        UniqueConstraint(
+            "label_studio_id",
+            name="uq_user_label_studio_id",
+        ),
+        UniqueConstraint(
+            "email",
+            name="uq_user_email",
+        ),
+    )
 
     id: int | None = Field(default=None, primary_key=True)
     label_studio_id: int | None = Field(default=None, unique=True, index=True)

@@ -3,7 +3,7 @@
 import asyncio
 from typing import Dict, List
 
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -26,7 +26,10 @@ async def get_image(
     """Retrieve an image by its ID."""
     query = select(Image).where(Image.id == image_id)
 
-    return (await session.exec(query)).first()
+    image = (await session.exec(query)).first()
+    if image is None:
+        raise HTTPException(status_code=404, detail="Image not found")
+    return image
 
 
 @app.get("/api/v1/images/checksum/{checksum}")
@@ -36,7 +39,10 @@ async def get_image_by_checksum(
     """Retrieve an image by its checksum."""
     query = select(Image).where(Image.checksum == checksum)
 
-    return (await session.exec(query)).first()
+    image = (await session.exec(query)).first()
+    if image is None:
+        raise HTTPException(status_code=404, detail="Image not found")
+    return image
 
 
 @app.get("/api/v1/dives/{dive_id}/images/")
@@ -46,7 +52,10 @@ async def get_dive_images(
     """Retrieve all images associated with a specific dive ID."""
     query = select(Image).where(Image.dive_id == dive_id)
 
-    return (await session.exec(query)).all()
+    images = (await session.exec(query)).all()
+    if not images:
+        raise HTTPException(status_code=404, detail="Images not found")
+    return images
 
 
 @app.get("/api/v1/dives/{dive_id}/images/clusters/{data_source}")
