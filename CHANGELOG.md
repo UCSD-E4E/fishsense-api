@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v1.18.1 (2026-02-24)
+
+### Bug Fixes
+
+- Formatting of user controller
+  ([`9fd0fa7`](https://github.com/UCSD-E4E/fishsense-api/commit/9fd0fa7b68bd5399161eadefa01aea0b4d35aae8))
+
+### Chores
+
+- **deps**: Bump pillow from 12.0.0 to 12.1.1
+  ([`de1bd8f`](https://github.com/UCSD-E4E/fishsense-api/commit/de1bd8fe525182b693c8227d06b479aa2870a9ac))
+
+
 ## v1.18.0 (2026-02-24)
 
 ### Bug Fixes
